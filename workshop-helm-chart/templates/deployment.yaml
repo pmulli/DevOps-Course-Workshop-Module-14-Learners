@@ -17,6 +17,40 @@ spec:
     spec:
       containers:
         - name: container-name
-          image: nginx
+          image: {{ .Values.image }}
           ports:
           - containerPort: 80
+          resources:
+            requests:
+              memory: "0.5Gi"
+              cpu: "500m"
+            limits:
+              memory: "0.5Gi"
+              cpu: "500m"
+          env:          
+          - name: DATABASE_NAME
+            value: amex-21-g2-paul-mullineux-order-processing-db
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: password
+                optional: false
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: username
+                optional: false
+          - name: DB_SERVER_NAME
+            value: amex-21-g2-paul-mullineux-order-processing-sqlserver.database.windows.net
+          - name: FINANCE_PACKAGE_URL
+            value: https://amex-21-g2-paul-mullineux-finance-package-app.azurewebsites.net
+          - name: SCHEDULED_JOB_ENABLED
+            value: 'true'
+          - name: SCHEDULED_JOB_INTERVAL_SECONDS
+            value: '15'
+          - name: SCHEDULED_JOB_MAX_INSTANCES
+            value: '2'
+      imagePullSecrets:
+        - name: acr-secret

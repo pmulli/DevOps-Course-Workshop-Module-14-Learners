@@ -1,2 +1,4 @@
-replicas: 1
+replicas: 4
 serviceName: module-14-helm
+image: pdmcontainerregistry.azurecr.io/our-image-name:v1
+
